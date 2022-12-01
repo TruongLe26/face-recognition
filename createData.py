@@ -4,6 +4,8 @@ import os
 import random
 import shutil
 import face_recognition
+
+
 path = "data"
 
 classname = []
@@ -36,13 +38,11 @@ for i in os.listdir(path):
         while success:
             if count >= 150:
                 break
-            if not face_recognition.face_locations(rimage):
+            if not success:
                 break
-            y1,x2,y2,x1 = face_recognition.face_locations(rimage)[0]
-            localFace = cv2.cvtColor(rimage,cv2.COLOR_BGR2RGB)
             pp = "train\\"+str(i)+"\\"+str(i)+"-"+str(count)+".jpg"
-            cv2.imwrite(pp,rimage[y1:y2,x1:x2])
+            cv2.imwrite(pp,rimage)
             success, rimage = cap.read()
             print("successfully!")
             count += 1
-            
+        count = 0

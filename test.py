@@ -9,7 +9,7 @@ labels = os.listdir("train")
 #training hinh anh va thu vien nhan dien
 recognizer = cv2.face.LBPHFaceRecognizer_create() # 
 #face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
-recognizer.read("dataSet/training2.yml")
+recognizer.read("dataSet/training.yml")
 
 
 # khoi dong webcam

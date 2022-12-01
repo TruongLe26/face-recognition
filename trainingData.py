@@ -17,8 +17,8 @@ def toArrayImage(path):
         imgNPath = os.path.join(path,nimg)
         listname.append(imgNPath.split("\\")[1])
         for img in os.listdir(imgNPath):
-            faceList = Image.open(f"{imgNPath}/{img}").convert("L")
-            
+            face = Image.open(f"{imgNPath}/{img}").convert("L")
+            faceList = np.array(face)
             name = imgNPath.split("\\")
             
             faces.append(faceList)
@@ -29,8 +29,20 @@ def toArrayImage(path):
 faces,names = toArrayImage(path)
 
 names = np.array(names)
-recognizer.train(faces,names)
-recognizer.save("dataSet/training.yml")
+
+def encodeFace(faces):
+    encode = []
+    for i in faces:
+        face = cv2.cvtColor(i,cv2.COLOR_BGR2RGB)
+        enImg = face_recognition.face_encodings(face)
+        encode.append(enImg)
+    return encode
+
+encodeFaces = encodeFace(faces)
+print(type(encodeFaces))
+# recognizer.train(faces,names)
+# recognizer.save("dataSet/training.yml")
+np.save("text1.txt",encodeFaces)
 cv2.destroyAllWindows()
 
 
