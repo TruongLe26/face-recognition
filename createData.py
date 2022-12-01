@@ -1,0 +1,48 @@
+import numpy as np
+import cv2
+import os
+import random
+import shutil
+import face_recognition
+path = "data"
+
+classname = []
+
+pathVd = []
+pathFol = []
+indexFol = []
+
+for i in os.listdir(path):
+    classname.append(i)
+    pathSub = os.path.join(path,i)
+    pathFol.append(pathSub)
+    
+    if os.path.exists ("train\\"+str(i)):
+        shutil.rmtree(r'./train/'+str(i))
+    os.mkdir("train\\"+str(i))
+
+    for j in os.listdir(pathSub):
+        pathJr = os.path.join(pathSub,j)
+
+        pathVd.append(pathJr)
+        count = 0
+        cap = cv2.VideoCapture(pathJr)
+
+        if not cap.isOpened():
+            print("Cannot open camera")
+            break
+        success, rimage = cap.read()
+        success = True
+        while success:
+            if count >= 150:
+                break
+            if not face_recognition.face_locations(rimage):
+                break
+            y1,x2,y2,x1 = face_recognition.face_locations(rimage)[0]
+            localFace = cv2.cvtColor(rimage,cv2.COLOR_BGR2RGB)
+            pp = "train\\"+str(i)+"\\"+str(i)+"-"+str(count)+".jpg"
+            cv2.imwrite(pp,rimage[y1:y2,x1:x2])
+            success, rimage = cap.read()
+            print("successfully!")
+            count += 1
+            
